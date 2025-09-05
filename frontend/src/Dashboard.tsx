@@ -5,7 +5,7 @@ import { motion } from "motion/react"
 import { BsArrowRight } from 'react-icons/bs';
 import { FaExclamation } from 'react-icons/fa';
 
-function App() {
+function Dashboard() {
   const [count, setCount] = useState(0)
 
   return (
@@ -36,4 +36,4 @@ function App() {
   )
 }
 
-export default App
+export default Dashboard

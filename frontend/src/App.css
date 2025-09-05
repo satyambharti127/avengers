@@ -1,2 +1,12 @@
 @import "tailwindcss";
-  
+
+
+@font-face {
+  font-family: Azonix;
+  src: url('assets/Azonix.otf');
+}
+
+@font-face {
+  font-family: Italiana;
+  src: url('assets/Italiana-Regular.ttf');
+}
