@@ -15,7 +15,10 @@ function App() {
       
       <motion.img initial={{opacity:0}} animate={{opacity:1, transition:{duration:3}}} className='right-0 pointer-events-none fixed h-full self-center z-0' src={star}/>
 
+        <motion.img initial={{opacity:0.3, x:7}} animate={{opacity:0.5, x:-7,transition:{duration:1, repeat:10, delay:0.7, repeatType:'mirror'}}} className='right-0 pointer-events-none fixed h-full self-center z-0' src={star}/>
+
       <motion.img initial={{opacity:0}} animate={{opacity:1, transition:{duration:3}}} className='left-0 rotate-180 pointer-events-none fixed h-full self-center z-0' src={star}/>
+    <motion.img initial={{opacity:0.3, x:7}} animate={{opacity:0.5, x:-7, transition:{duration:1, repeat:10,delay:0.7, repeatType:'mirror'}}} className='left-0  rotate-180 pointer-events-none fixed h-full self-center z-0' src={star}/>
 
 
         <motion.h1 initial={{opacity:0}} animate={{opacity:1, transition:{duration:1.7, delay:0.3}}} className='text-center z-10 text-6xl font-[Azonix]'>echo AI</motion.h1>
