@@ -6,6 +6,10 @@
   src: url('assets/Azonix.otf');
 }
 
+html{
+  background-color: black;
+}
+
 @font-face {
   font-family: Italiana;
   src: url('assets/Italiana-Regular.ttf');

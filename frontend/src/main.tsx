@@ -3,6 +3,7 @@ import './index.css'
 import App from './App.tsx'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import Dashboard from './Dashboard.tsx'
+import New from './New.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -11,6 +12,8 @@ createRoot(document.getElementById('root')!).render(
      path="/" element={<App />}/>
       <Route
      path="/app" element={<Dashboard />}/>
+       <Route
+     path="/new" element={<New />}/>
     
 </Routes>
   </BrowserRouter>,
