@@ -1,18 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import star from './assets/tl.webp'
+
 import './App.css'
-import { motion } from "motion/react"
-import { BsArrowRight } from 'react-icons/bs';
-import { FaExclamation, FaTruckLoading } from 'react-icons/fa';
-import { Link } from 'react-router';
+
+import { Link, useParams } from 'react-router';
 import { FiSend } from 'react-icons/fi';
 import Editor from './Editor';
 import html2canvas from 'html2canvas';
 import { AiOutlineDownload } from 'react-icons/ai';
 import { AiOutlineLoading } from 'react-icons/ai';
+import { BsUpload } from 'react-icons/bs';
 
 async function getInitialObject(prompt:string){
-  var content = await fetch(`http://localhost:8000/getinitialobject`, {
+  var content = await fetch(`/getinitialobject`, {
             method: 'POST', headers: {
                 'Content-Type': 'application/json'
             },
@@ -42,7 +41,7 @@ async function fixObject(prompt:string, item: {
       fontWeight: number;
       textAlign: "left" | "center" | "right";
     }[]){
-  var content = await fetch(`http://localhost:8000/tuneObject`, {
+  var content = await fetch(`/tuneObject`, {
             method: 'POST', headers: {
                 'Content-Type': 'application/json'
             },
@@ -64,6 +63,7 @@ function New() {
 
 
   const captureScreenshot = async () => {
+    console.log('LS0tLS1CRUdJTiBQR1AgU0lHTkVEIE1FU1NBR0UtLS0tLQ0KSGFzaDogU0hBNTEyDQoNCnByb29mIHRoYXQgbm8gb25lIGVsc2UgZGlkIGFueXRoaW5nIGF0IGFsbA0KLS0tLS1CRUdJTiBQR1AgU0lHTkFUVVJFLS0tLS0NCg0KaVFFekJBRUJDZ0FkRmlFRTZ5V01RT3ptZzRyV3d2ZnRVbGVjUnhaOWZtNEZBbWk3K2JjQUNna1FVbGVjUnhaOQ0KZm00eTZBZjlFdnNMdUdQR01qOHd5d0ZsZldFMXczcnh5VlpwcWhMRTZnMys2d24vK29VWXdSZEwwS20wLzhDNg0KRlEyS0lyZkpCdmdObFZYdW1kQUdlQ0hQazdKZlg1S2VubCtncXdXekVZQVd1Q0QrMXdMSDBrU2hpaFczU0pubg0KMkNXUDY1SE1UOWpkajdJc1c2TUJpMWlZanE5TnBFbktqYjRnSy81U21NbmVJVG4rQVpxUE0xcnBHaFlFNyt2Tw0KeEYzZDN2YWhOUy85Tml5N3FtTjB5TnRzYlQwM0l0L1MybmVYejJsNDZKV0E5U01NQkJYZHk1eWdHY09VK2NUQg0KM3NSU2R4cEFiMGtuRWI5SG4wbGY4UXBIOUlaRUZuN0srSGxVYXlKZ0lXaHpTWGZxbFlIM1oyQUxxYUZuc0VFbA0KMlV3bFJId0l3MGI5S29kaTJlbGVNM0NkU0k2UmxRPT0NCj1YNEg0DQotLS0tLUVORCBQR1AgU0lHTkFUVVJFLS0tLS0=')
     if (!editorRef.current) return
     const canvas = await html2canvas(editorRef.current)
     const dataUrl = canvas.toDataURL('image/png')
@@ -78,6 +78,57 @@ function New() {
 
   const [caption, setCaption] = useState("")
   const [hashtags, setHashtags] = useState<(string | null)[]>([]);
+
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null)
+
+    const fileInputRef = useRef<HTMLInputElement>(null)
+
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onloadend = () => {
+    if (!reader.result) return
+
+    const img = new Image()
+    img.src = reader.result.toString()
+    img.onload = () => {
+      const canvas = document.createElement("canvas")
+      const ctx = canvas.getContext("2d")!
+
+      const MAX_WIDTH = 800
+      const scaleSize = MAX_WIDTH / img.width
+      canvas.width = MAX_WIDTH
+      canvas.height = img.height * scaleSize
+
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
+      // Export with compression (0.7 = 70% quality)
+      const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7)
+
+      setUploadedImage(compressedDataUrl)
+
+      fetch("/items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: uuid,
+          content: {
+            copy: {
+              hashtags: hashtags,
+              caption: caption,
+              response: conversation[conversation.length - 1]
+            },
+            design: items,
+            background: compressedDataUrl
+          }
+        })
+      })
+    }
+  }
+  reader.readAsDataURL(file)
+}
 
 
   const [loading, setLoading] = useState(false)
@@ -96,6 +147,9 @@ const conversationEndRef = useRef<HTMLDivElement>(null);
 useEffect(() => {
   conversationEndRef.current?.scrollIntoView({ behavior: "smooth" });
 }, [conversation]);
+
+
+
 
 const [items, setItems] = useState<
     {
@@ -127,6 +181,58 @@ const [items, setItems] = useState<
     }
   ])
 
+
+  const {uuid} = useParams()
+
+  console.log(uuid)
+
+useEffect(()=>{
+  if(items.length==1||conversation.length<=2||conversation.length%2!=0
+  ){return}
+
+
+  fetch("/items", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({id:uuid,
+    content:{
+    copy:{hashtags:hashtags,caption:caption,response:conversation[conversation.length-1]},
+    design:items,
+    background:uploadedImage
+  }})
+})
+
+
+
+}, [conversation])
+
+
+
+
+
+
+  useEffect( ()=>{
+    setLoading(true)
+    fetch("http://localhost:8000/items/"+uuid, {
+  method: "GET",
+  credentials: "include" // important so cookies (session) are sent
+}).then(res=>{res.json().then(json=>{
+  console.log(json)
+  if(json.content){
+    setItems(json.content.design)
+    setCaption(json.content.copy.caption)
+    setHashtags(json.content.copy.hashtags)
+    setUploadedImage(json.content.background)
+    setConversation([{text:'Welcome back\n\nMake your business echo thorugh the web! \n\nTell me what do you need me to fix?', sender:'llm'}])
+  }
+  setLoading(false)
+})})
+
+  }, [])
+
+
+
+
   async function updateObject(){
     if(promptRef.current){
       setLoading(true) 
@@ -155,6 +261,7 @@ setHashtags(contentObject.copy.hashtags)
     <div className='bg-black'>
       <div className='w-screen overflow-hidden selection:bg-fuchsia-700/40 justify-evenly text-white bg-gradient-to-tr from-gray-950 to-stone-950 h-screen flex flex-row'>
     
+    <Link className='h-11 hover:underline transition-all hover:scale-105 fixed top-4 text-lg left-6' to={'/app'}>return</Link>
 
     <div className='h-5/6 relative w-1/4 flex flex-col justify-end bg-gradient-to-b self-center from-slate-800/50 to-gray-900/50'>
    
@@ -174,6 +281,14 @@ setHashtags(contentObject.copy.hashtags)
       
      <p ref={promptRef} onKeyDown={(e)=>{if(e.key=='Enter'){e.preventDefault();updateObject()}}} className='outline-none font-[Italiana] text-xl' contentEditable> </p>
    </div>
+    <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+   <BsUpload onClick={() => fileInputRef.current?.click()} className='self-center absolute right-0 bottom-17 w-1/4 h-7 transition-all opacity-60 hover:opacity-100 hover:scale-110'/>
    <FiSend onClick={updateObject} className='self-center absolute right-0 w-1/4 h-7 transition-all opacity-60 hover:opacity-100 hover:scale-110'/>
     </form>:<AiOutlineLoading className='self-center h-17 w-17 animate-[spin_1s_infinite] mb-12'/>}
     </div>
@@ -181,10 +296,10 @@ setHashtags(contentObject.copy.hashtags)
        <div className='h-5/6 w-2/4 self-center bg-gradient-to-b flex flex-row justify-center from-slate-800/50 to-gray-900/50'>
        <div  className='w-2/3 h-full flex flex-col justify-center'>
       <div ref={editorRef} className='self-center w-[400px] h-[500px]'>
-       <Editor  items={items} setItems={setItems} />
+       <Editor imageURL={uploadedImage} items={items} setItems={setItems} />
        </div>
        </div>
-         <div className='font-[ubuntu] w-1/3 h-full flex flex-col justify-evenly bg-fuchsia-600/5'>
+         {hashtags.length>1?<div className='font-[ubuntu] w-1/3 h-full flex flex-col justify-evenly bg-fuchsia-600/5'>
          <div className='px-2 select-all flex flex-wrap'><h1 className='select-none w-full'>Hashtags:</h1>
        {hashtags.map((hashtag, index)=>  <span className='text-cyan-600 mx-2 hover:underline ' key={index}>{hashtag}</span>)}
          </div>
@@ -194,7 +309,7 @@ setHashtags(contentObject.copy.hashtags)
           <button onClick={captureScreenshot} className='text-white flex select-none shadow-gray-600/30 transition-all hover:shadow-none duration-300 hover:translate-x-1 hover:translate-y-1 shadow-xl flex-row rounded-full font-thin w-fit px-9 py-2 text-lg font-[Ubuntu] bg-fuchsia-600 self-center z-10'> <span className='self-center mr-6'><AiOutlineDownload className='h-5/6 w-9'/></span><span className='self-center'>Download</span>
      
       </button>
-         </div>
+         </div>:null}
        </div>
     
 

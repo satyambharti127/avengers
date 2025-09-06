@@ -1,4 +1,4 @@
-import { useState } from 'react'
+
 import star from './assets/tl.webp'
 import './App.css'
 import { motion } from "motion/react"
@@ -7,10 +7,9 @@ import { FaExclamation } from 'react-icons/fa';
 import { Link } from 'react-router';
 
 function App() {
-  const [count, setCount] = useState(0)
 console.log('LS0tLS1CRUdJTiBQR1AgU0lHTkVEIE1FU1NBR0UtLS0tLQ0KSGFzaDogU0hBNTEyDQoNCnByb29mIHRoYXQgbm8gb25lIGVsc2UgZGlkIGFueXRoaW5nIGF0IGFsbA0KLS0tLS1CRUdJTiBQR1AgU0lHTkFUVVJFLS0tLS0NCg0KaVFFekJBRUJDZ0FkRmlFRTZ5V01RT3ptZzRyV3d2ZnRVbGVjUnhaOWZtNEZBbWk3K2JjQUNna1FVbGVjUnhaOQ0KZm00eTZBZjlFdnNMdUdQR01qOHd5d0ZsZldFMXczcnh5VlpwcWhMRTZnMys2d24vK29VWXdSZEwwS20wLzhDNg0KRlEyS0lyZkpCdmdObFZYdW1kQUdlQ0hQazdKZlg1S2VubCtncXdXekVZQVd1Q0QrMXdMSDBrU2hpaFczU0pubg0KMkNXUDY1SE1UOWpkajdJc1c2TUJpMWlZanE5TnBFbktqYjRnSy81U21NbmVJVG4rQVpxUE0xcnBHaFlFNyt2Tw0KeEYzZDN2YWhOUy85Tml5N3FtTjB5TnRzYlQwM0l0L1MybmVYejJsNDZKV0E5U01NQkJYZHk1eWdHY09VK2NUQg0KM3NSU2R4cEFiMGtuRWI5SG4wbGY4UXBIOUlaRUZuN0srSGxVYXlKZ0lXaHpTWGZxbFlIM1oyQUxxYUZuc0VFbA0KMlV3bFJId0l3MGI5S29kaTJlbGVNM0NkU0k2UmxRPT0NCj1YNEg0DQotLS0tLUVORCBQR1AgU0lHTkFUVVJFLS0tLS0=')
   return (
-    <div className='bg-black'>
+    <div className='bg-black LS0tLS1CRUdJTiBQR1AgU0lHTkVEIE1FU1NBR0UtLS0tLQ0KSGFzaDogU0hBNTEyDQoNCnByb29mIHRoYXQgbm8gb25lIGVsc2UgZGlkIGFueXRoaW5nIGF0IGFsbA0KLS0tLS1CRUdJTiBQR1AgU0lHTkFUVVJFLS0tLS0NCg0KaVFFekJBRUJDZ0FkRmlFRTZ5V01RT3ptZzRyV3d2ZnRVbGVjUnhaOWZtNEZBbWk3K2JjQUNna1FVbGVjUnhaOQ0KZm00eTZBZjlFdnNMdUdQR01qOHd5d0ZsZldFMXczcnh5VlpwcWhMRTZnMys2d24vK29VWXdSZEwwS20wLzhDNg0KRlEyS0lyZkpCdmdObFZYdW1kQUdlQ0hQazdKZlg1S2VubCtncXdXekVZQVd1Q0QrMXdMSDBrU2hpaFczU0pubg0KMkNXUDY1SE1UOWpkajdJc1c2TUJpMWlZanE5TnBFbktqYjRnSy81U21NbmVJVG4rQVpxUE0xcnBHaFlFNyt2Tw0KeEYzZDN2YWhOUy85Tml5N3FtTjB5TnRzYlQwM0l0L1MybmVYejJsNDZKV0E5U01NQkJYZHk1eWdHY09VK2NUQg0KM3NSU2R4cEFiMGtuRWI5SG4wbGY4UXBIOUlaRUZuN0srSGxVYXlKZ0lXaHpTWGZxbFlIM1oyQUxxYUZuc0VFbA0KMlV3bFJId0l3MGI5S29kaTJlbGVNM0NkU0k2UmxRPT0NCj1YNEg0DQotLS0tLUVORCBQR1AgU0lHTkFUVVJFLS0tLS0='>
       <div className='w-screen overflow-hidden selection:bg-fuchsia-700/40 text-white bg-gradient-to-tr from-gray-950 to-stone-950 space-y-12 h-screen flex flex-col justify-center'>
       
       <motion.img initial={{opacity:0}} animate={{opacity:1, transition:{duration:3}}} className='right-0 pointer-events-none fixed h-full self-center z-0' src={star}/>

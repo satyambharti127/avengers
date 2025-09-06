@@ -12,8 +12,7 @@ createRoot(document.getElementById('root')!).render(
      path="/" element={<App />}/>
       <Route
      path="/app" element={<Dashboard />}/>
-       <Route
-     path="/new" element={<New />}/>
+      <Route path="/new/:uuid" element={<New />} />
     
 </Routes>
   </BrowserRouter>,

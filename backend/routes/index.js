@@ -1,9 +1,6 @@
 import express from "express";
 const router = express.Router();
 
-router.get('/', (req, res)=>{
-    res.send('working!')
-})
 
 router.post("/getinitialobject", async (req, res) => {
   var response = await fetch("https://api.mistral.ai/v1/agents/completions", {

@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-export default function Editor({
+export default function Editor({imageURL,
   items,
   setItems,
-}: {
+}: {imageURL:string|null,
   items: {
     id: number;
     text: string;
@@ -33,7 +33,7 @@ export default function Editor({
         textAlign: "left" | "center" | "right";
       }[]
     >
-  >;
+  >
 }) {
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -67,10 +67,22 @@ export default function Editor({
 
   return (
     <div
-      className="w-[400px] h-[500px] relative self-center bg-white border"
+      className="w-[400px] h-[500px] flex flex-col justify-center relative self-center bg-white border"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
+        {imageURL ? (
+<div 
+  style={{
+    backgroundImage: `url(${imageURL})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    width: '100%',
+    height: '100%'
+  }}
+/>
+) : null}
+<div className="h-full w-full absolute bg-[#ffffff30] top-0 left-0">
       {items.map((item) => (
         <p
           key={item.id}
@@ -91,7 +103,8 @@ export default function Editor({
         >
           {item.text}
         </p>
-      ))}
+        
+      ))}</div>
     </div>
   );
 }
