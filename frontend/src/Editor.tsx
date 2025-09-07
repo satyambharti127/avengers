@@ -63,7 +63,7 @@ export default function Editor({imageURL,
     );
   };
 
-  const handleMouseUp = () => setDraggingId(null);
+  const handleMouseUp = () => {setDraggingId(null)};
 
   return (
     <div

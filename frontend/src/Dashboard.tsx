@@ -58,14 +58,19 @@ function Dashboard() {
   >()
 
   useEffect( ()=>{
-    fetch("http://localhost:8000/items", {
+    fetch("/items", {
   method: "GET",
   credentials: "include" // important so cookies (session) are sent
-}).then(res=>{res.json().then(json=>{
-  setItems(json)
-})})
+}).then(res=>{
+  try{
+    res.json().then(json=>{
+      console.log(json)
+  setItems(json)})
+}catch(e){
 
-  })
+}})
+
+  }, [])
 
   return (
     <div className='bg-black'>
@@ -81,11 +86,17 @@ function Dashboard() {
   </a>
   </motion.div>
 
-    {items?.map((item, i) => (
+    {items?.map((item, i) => { 
+    
+    if(!item.content){
+      return
+    }
+    
+    return (
       <Link to={`/new/${item.id}`}>
       <DashboardElement item={item} key={i}/>
       </Link>
-))}
+)})}
  </motion.div>
 </div>
 

@@ -187,9 +187,7 @@ const [items, setItems] = useState<
   console.log(uuid)
 
 useEffect(()=>{
-  if(items.length==1||conversation.length<=2||conversation.length%2!=0
-  ){return}
-
+  if((items.length==1||conversation.length<2)){return}
 
   fetch("/items", {
   method: "POST",
@@ -203,8 +201,10 @@ useEffect(()=>{
 })
 
 
+console.log('updated')
 
-}, [conversation])
+
+}, [conversation, items])
 
 
 
@@ -223,7 +223,7 @@ useEffect(()=>{
     setCaption(json.content.copy.caption)
     setHashtags(json.content.copy.hashtags)
     setUploadedImage(json.content.background)
-    setConversation([{text:'Welcome back\n\nMake your business echo thorugh the web! \n\nTell me what do you need me to fix?', sender:'llm'}])
+    setConversation([{text:'Welcome back\n\nMake your business echo thorugh the web!', sender:'llm'}, {text:'Tell me what do you need me to fix?', sender:'llm'}])
   }
   setLoading(false)
 })})
