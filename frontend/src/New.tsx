@@ -213,7 +213,7 @@ useEffect(()=>{
 
   useEffect( ()=>{
     setLoading(true)
-    fetch("http://localhost:8000/items/"+uuid, {
+    fetch("/items/"+uuid, {
   method: "GET",
   credentials: "include" // important so cookies (session) are sent
 }).then(res=>{res.json().then(json=>{
