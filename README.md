@@ -7,10 +7,12 @@
 - Aayushi Patel (India)
 
 # Echo AI
-
-This project uses Docker to create a self-contained environment. Follow the steps below to build and run the application.
+## Live Demo:
+echoai-qleh.onrender.com
 
 ## Getting Started with Docker
+
+This project uses Docker to create a self-contained environment. Follow the steps below to build and run the application.
 
 ### 1. Environment Variables
 
