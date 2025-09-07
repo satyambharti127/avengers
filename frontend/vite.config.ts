@@ -8,7 +8,11 @@ export default defineConfig({
   build:{
 outDir:'../backend/static'
   },
-  server: {
+})
+
+
+
+/*  server: {
     proxy: {
       '/getinitialobject': {
         target: 'http://localhost:8000', // Your backend API server
@@ -27,6 +31,6 @@ outDir:'../backend/static'
         changeOrigin: true,
       },
     },
-  },
+  },*/
 
-})
+
